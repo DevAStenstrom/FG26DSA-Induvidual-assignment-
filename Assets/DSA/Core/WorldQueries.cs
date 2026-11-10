@@ -6,9 +6,13 @@ namespace FrontierDispatch.Core
     // Intentionally straightforward baseline. Correct for small worlds, but some
     // repeated queries scan all data. The assignment asks students to reason about
     // these operations before improving the representation.
+    
+    
     public sealed class WorldQueries
     {
         private readonly WorldData _world;
+        
+        
 
         public WorldQueries(WorldData world)
         {
@@ -43,5 +47,8 @@ namespace FrontierDispatch.Core
 
             return result;
         }
+        
+        
+        
     }
 }

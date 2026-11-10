@@ -8,5 +8,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="../../../Assets/DSA/Core/**/*.cs" LinkBase="Core" />
+    <Compile Update="..\..\..\Assets\DSA\Core\MinPriorityQueue.cs">
+      <Link>Core\MinPriorityQueue.cs</Link>
+    </Compile>
   </ItemGroup>
 </Project>

@@ -4,7 +4,7 @@ namespace FrontierDispatch.Core
 {
     public sealed class Location
     {
-        public Location(int id, string name, WorldPosition position, string type)
+        public Location(int id, string name, WorldPosition position, string type,int priority = int.MaxValue)
         {
             if (id < 0) throw new ArgumentOutOfRangeException(nameof(id));
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Name is required.", nameof(name));
@@ -14,11 +14,13 @@ namespace FrontierDispatch.Core
             Name = name;
             Position = position;
             Type = type;
+            Priority = priority;
         }
 
         public int Id { get; }
         public string Name { get; }
         public WorldPosition Position { get; }
         public string Type { get; }
+        public int Priority { get; }
     }
 }
