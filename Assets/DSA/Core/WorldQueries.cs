@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FrontierDispatch.Core
 {
@@ -11,44 +12,48 @@ namespace FrontierDispatch.Core
     public sealed class WorldQueries
     {
         private readonly WorldData _world;
+        private Dictionary<int,Location>  _locationsIdsDictionary = new Dictionary<int,Location>();
+        private readonly Dictionary<int, List<Connection>> _connectionsDictionary = new Dictionary<int, List<Connection>>();
         
-        
-
         public WorldQueries(WorldData world)
         {
             _world = world ?? throw new ArgumentNullException(nameof(world));
+           
+            foreach (var location in world.Locations)
+            {
+                _locationsIdsDictionary.Add(location.Id,location);
+            }
+            
+            foreach (var connection in world.Connections)
+            {
+                //if not find value add empty list
+                if (!_connectionsDictionary.TryGetValue(connection.FromLocationId, out var connections))
+                {
+                    connections = new List<Connection>();
+                    _connectionsDictionary.Add(connection.FromLocationId, connections);
+                }
+                
+                connections.Add(connection);
+            }
         }
 
         public Location? FindLocationById(int id)
         {
-            for (int i = 0; i < _world.Locations.Count; ++i)
+            if (_locationsIdsDictionary.ContainsKey(id))
             {
-                Location location = _world.Locations[i];
-                if (location.Id == id)
-                {
-                    return location;
-                }
+                return _locationsIdsDictionary[id];
             }
-
             return null;
         }
 
         public IReadOnlyList<Connection> FindOutgoingConnections(int fromLocationId)
         {
-            var result = new List<Connection>();
-            for (int i = 0; i < _world.Connections.Count; ++i)
+            //if we get connection list from id
+            if (_connectionsDictionary.TryGetValue(fromLocationId, out var connections))
             {
-                Connection connection = _world.Connections[i];
-                if (connection.FromLocationId == fromLocationId)
-                {
-                    result.Add(connection);
-                }
+                return _connectionsDictionary[fromLocationId];
             }
-
-            return result;
+            return null;
         }
-        
-        
-        
     }
 }

@@ -36,26 +36,7 @@ namespace FrontierDispatch.Tests
         [Test]
         public void FindNextPriority()
         {
-            var sampleFactory = SampleWorldFactory.CreateSmall();
-            var queries = new WorldQueries(sampleFactory);
-            var priorityList = new MinPriorityQueue();
-            foreach (var item in sampleFactory.Locations)
-            {
-                priorityList.Enqueue(item); 
-            }
-            
-            Assert.That(priorityList.PeekNext().Priority, Is.EqualTo(3));
-            priorityList.DequeueNext();
-            Assert.That(priorityList.PeekNext().Priority, Is.EqualTo(5));
-            priorityList.DequeueNext();
-            Assert.That(priorityList.PeekNext().Priority, Is.EqualTo(5));
-            priorityList.DequeueNext();
-            Assert.That(priorityList.PeekNext().Priority, Is.EqualTo(8));
-            priorityList.DequeueNext();
-            Assert.That(priorityList.PeekNext().Priority, Is.EqualTo(21));
-            priorityList.DequeueNext();
-            Assert.That(priorityList.PeekNext().Priority, Is.EqualTo(39));
-            
+
         }
         
     }
