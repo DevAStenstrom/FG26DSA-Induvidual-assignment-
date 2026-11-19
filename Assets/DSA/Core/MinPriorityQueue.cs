@@ -1,94 +1,95 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace FrontierDispatch.Core
 {
-    public class MinPriorityQueue
+    public class MinPriorityQueue<T>
     {
-        private readonly List<Location> LocationsPriorityList = new List<Location>();
-        public int Count => LocationsPriorityList.Count;
-        
-        public void Enqueue(Location location)
+        private readonly List<Entry<T>> _entries = new List<Entry<T>>();
+
+        public int Count => _entries.Count;
+
+        public void Enqueue(T value, int priority)
         {
-            LocationsPriorityList.Add(location);
-            SiftUp(LocationsPriorityList.Count - 1);
+            _entries.Add(new Entry<T>(value, priority));
+            SiftUp(_entries.Count - 1);
         }
-        
-        public Location PeekNext()
+
+        public Entry<T> Peek()
         {
-            if (LocationsPriorityList.Count == 0)
+            if (_entries.Count == 0)
             {
                 throw new InvalidOperationException("The dispatch queue is empty.");
             }
 
-            return LocationsPriorityList[0];
+            return _entries[0];
         }
-        
-        public Location DequeueNext()
+
+        public Entry<T> Dequeue()
         {
-            if (LocationsPriorityList.Count == 0)
+            if (_entries.Count == 0)
             {
                 throw new InvalidOperationException("The dispatch queue is empty.");
             }
 
-            Location minimum = LocationsPriorityList[0];
-            int lastIndex = LocationsPriorityList.Count - 1;
+            Entry<T> minimum = _entries[0];
+            int lastIndex = _entries.Count - 1;
+            _entries[0] = _entries[lastIndex];
+            _entries.RemoveAt(lastIndex);
 
-            LocationsPriorityList[0] = LocationsPriorityList[lastIndex];
-            LocationsPriorityList.RemoveAt(lastIndex);
-
-            if (LocationsPriorityList.Count > 0)
+            if (_entries.Count > 0)
             {
                 SiftDown(0);
             }
 
             return minimum;
         }
-        
+
         private void SiftUp(int index)
         {
-            if (index == 0)
+            while (index > 0)
             {
-                return;
-            }
-            
-            int parentIndex = ParentIndex(index);
-            if (LocationsPriorityList[index].Priority < LocationsPriorityList[parentIndex].Priority)
-            {
-                Swap(parentIndex,index);
-                SiftUp(parentIndex);
-            }
+                int parentIndex = ParentIndex(index);
+                if (_entries[index].Priority >= _entries[parentIndex].Priority)
+                {
+                    return;
+                }
 
+                Swap(parentIndex, index);
+                index = parentIndex;
+            }
         }
-        
+
         private void SiftDown(int index)
         {
-            if (index >= LocationsPriorityList.Count)
+            while (index < _entries.Count)
             {
-                return;
-            }
+                int leftChildIndex = LeftChildIndex(index);
+                int rightChildIndex = RightChildIndex(index);
+                int smallest = index;
 
-            int leftChildIndex = LeftChildIndex(index);
-            int rightChildIndex = RightChildIndex(index);
-            
-            int smallest = index;
-            if (leftChildIndex < LocationsPriorityList.Count && LocationsPriorityList[leftChildIndex].Priority < LocationsPriorityList[smallest].Priority )
-            {
-                smallest = leftChildIndex;
-            }
-            if (rightChildIndex < LocationsPriorityList.Count && LocationsPriorityList[rightChildIndex].Priority < LocationsPriorityList[smallest].Priority )
-            {
-                smallest = rightChildIndex;
-            }
+                if (leftChildIndex < _entries.Count &&
+                    _entries[leftChildIndex].Priority < _entries[smallest].Priority)
+                {
+                    smallest = leftChildIndex;
+                }
 
-            if (smallest != index)
-            {
-                Swap(smallest,index);
-                SiftDown(smallest);
+                if (rightChildIndex < _entries.Count &&
+                    _entries[rightChildIndex].Priority < _entries[smallest].Priority)
+                {
+                    smallest = rightChildIndex;
+                }
+
+                if (smallest == index)
+                {
+                    return;
+                }
+
+                Swap(smallest, index);
+                index = smallest;
             }
-            
         }
-        
+
         private static int ParentIndex(int index)
         {
             return (index - 1) / 2;
@@ -103,12 +104,13 @@ namespace FrontierDispatch.Core
         {
             return 2 * index + 2;
         }
-        
+
         private void Swap(int a, int b)
         {
-            Location temp = LocationsPriorityList[a];
-            LocationsPriorityList[a] = LocationsPriorityList[b];
-            LocationsPriorityList[b] = temp;
+            Entry<T> temp = _entries[a];
+            _entries[a] = _entries[b];
+            _entries[b] = temp;
         }
+
     }
 }

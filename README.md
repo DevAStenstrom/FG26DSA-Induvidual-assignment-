@@ -10,11 +10,13 @@ The course uses three layers:
 2. **Implement** - headless C#/.NET labs and tests.
 3. **Apply** - Unity visualization/integration/profiling.
 
-The Unity layer is not required for the assessed algorithmic objectives. The reusable core under `Assets/DSA/Core` has **no UnityEngine dependency** and is also compiled by the standalone .NET solution under `Standalone/`.
+The Unity layer is not required for the assessed algorithmic objectives. The reusable core under `Assets/DSA/Core` has
+**no UnityEngine dependency** and is also compiled by the standalone .NET solution under `Standalone/`.
 
 ## Game premise
 
-You operate a frontier dispatch network. Outposts are connected by roads with travel costs. Couriers receive jobs, route through the world, and interact with entities identified by IDs.
+You operate a frontier dispatch network. Outposts are connected by roads with travel costs. Couriers receive jobs, route
+through the world, and interact with entities identified by IDs.
 
 This naturally supports the course topics:
 
@@ -37,4 +39,5 @@ This naturally supports the course topics:
 6. Verify the standalone solution separately with `dotnet build/test` on a machine with .NET 10.
 7. Commit the generated scenes and `.meta` files to the course Unity repository.
 
-The distributed student repository should contain the generated scenes already. Students should not need to run the builder.
+The distributed student repository should contain the generated scenes already. Students should not need to run the
+builder.

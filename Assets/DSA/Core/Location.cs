@@ -15,6 +15,7 @@ namespace FrontierDispatch.Core
             Position = position;
             Type = type;
             Priority = priority;
+            
         }
 
         public int Id { get; }
