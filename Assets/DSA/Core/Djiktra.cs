@@ -82,5 +82,57 @@ namespace FrontierDispatch.Core
 
             return RouteResult.NotFound(expandedNodes);
         }
+        
+        public IReadOnlyDictionary<string, int> FindReachable(WeightedGraph graph, string start, int budget)
+        {
+            if (graph == null)
+            {
+                throw new ArgumentNullException(nameof(graph));
+            }
+
+            // budget < 0 or no start node return empty best list
+            var bestCost = new Dictionary<string, int>();
+            if (budget < 0 || !graph.ContainsNode(start))
+            {
+                return bestCost;
+            }
+
+            var frontier = new MinPriorityQueue<string>();
+            bestCost[start] = 0;
+            frontier.Enqueue(start, 0);
+
+            while (frontier.Count > 0)
+            {
+                var entry = frontier.Dequeue();
+                string current = entry.Value;
+
+                //if prio is not currently bestcost continue
+                if (entry.Priority != bestCost[current])
+                {
+                    continue;
+                }
+
+                foreach (WeightedEdge edge in graph.GetOutgoing(current))
+                {
+                    int candidate = entry.Priority + edge.Cost;
+
+                    // if new node cost more than budget continue
+                    if (candidate > budget)
+                    {
+                        continue;
+                    }
+
+                    //else add
+                    if (!bestCost.TryGetValue(edge.To, out int known) || candidate < known)
+                    {
+                        bestCost[edge.To] = candidate;
+                        frontier.Enqueue(edge.To, candidate);
+                    }
+                }
+            }
+
+            return bestCost;
+        }
+        
     }
 }

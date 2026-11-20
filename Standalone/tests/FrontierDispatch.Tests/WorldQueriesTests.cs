@@ -5,6 +5,7 @@ namespace FrontierDispatch.Tests
 {
     public sealed class WorldQueriesTests
     {
+
         [Test]
         public void FindLocationById_ReturnsMatchingLocation()
         {
@@ -33,11 +34,6 @@ namespace FrontierDispatch.Tests
             }
         }
         
-        [Test]
-        public void FindNextPriority()
-        {
-
-        }
         
     }
 }
