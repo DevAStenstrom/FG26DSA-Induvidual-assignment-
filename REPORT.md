@@ -1,0 +1,4 @@
+my initial analysis was that the program ran in an O(n) to setup everything i did not think this was very efficient so i changed the architecture to O(1) by using Dictionary's instead. My predication was that it would use more memory however accessing it over and over again would be a lot faster which was proven by the later Performance tests. With a test of 20'000 calls the LookupID function improved from 19ms to 0.1ms and the FindOutgoingConnections function went from 700+ms to around 0.25ms however the preparation for the Dictionary's compares to using the list went up to 6ms.
+
+i did use some AI to help me with the Performance tests and the Dijkstra algorithm since i got stuck on both in the Performance i did not know i would get the extra memory that was used by using Dictionary's and in Dijkstra i got stuck on the looping of Weighted Edges
+
